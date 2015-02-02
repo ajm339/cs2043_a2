@@ -1,10 +1,11 @@
 #! / bin / bash           
+min_words = 100
+max_words = 0
 
 for file in tweets/*.txt; do
-  echo "Processing $f file..."
-  
-  while read p; do
-    echo $p
-  done <peptides.txt
-  
+
+  while read word; do
+    echo $word + "\n"
+  done < $file
+
 done
