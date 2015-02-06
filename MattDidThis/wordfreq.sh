@@ -1,15 +1,11 @@
 #! /bin/bash
 
-#calculate minimum number of words in a tweet
-wc -w tweets/* | sort -n | head -1 | awk {'print $1'} > min_words.txt
-#calculate maximum number of words in a tweet
-wc -w tweets/* | sort -n | tail -1 | awk {'print $1'} > max_words.txt
+wc -w tweets/* | sed 's/tweets\/tweet\_[[:digit:]].txt/''/g' | sed 's/tweets\/tweet\_[[:digit:]][[:digit:]].txt/''/g' | sed 's/tweets\/tweet\_[[:digit:]][[:digit:]][[:digit:]].txt/''/g' | sed 's/tweets\/tweet\_[[:digit:]][[:digit:]][[:digit:]][[:digit:]].txt/''/g' | sed 's/ /''/g' | sort -n | tail -2 | head -1 > max_words.txt
 
-#option 1 (only works within directory) http://stackoverflow.com/questions/9151164/get-average-words-per-file
-find . -type f -exec wc -w {} \; | awk '{numfiles=numfiles+1;total += $1} END{print total/numfiles}'
+wc -w tweets/* | sed 's/tweets\/tweet\_[[:digit:]].txt/''/g' | sed 's/tweets\/tweet\_[[:digit:]][[:digit:]].txt/''/g' | sed 's/tweets\/tweet\_[[:digit:]][[:digit:]][[:digit:]].txt/''/g' | sed 's/tweets\/tweet\_[[:digit:]][[:digit:]][[:digit:]][[:digit:]].txt/''/g' | sed 's/ /''/g' | sort -n | head -1 > min_words.txt
 
-#This properly gets total words
-wc -w tweets/* | sort -n | tail -1 | awk {'print $1'} 
+# average => take total number of words and divide by number of tweets (i.e. 2000)
 
-#This properly gets total files
-ls -1 tweets | wc -l
+totalWords=$(wc -w tweets/* | sed 's/tweets\/tweet\_[[:digit:]].txt/''/g' | sed 's/tweets\/tweet\_[[:digit:]][[:digit:]].txt/''/g' | sed 's/tweets\/tweet\_[[:digit:]][[:digit:]][[:digit:]].txt/''/g' | sed 's/tweets\/tweet\_[[:digit:]][[:digit:]][[:digit:]][[:digit:]].txt/''/g' | sed 's/ /''/g' | sort -n | tail -1 | sed 's/total/''/g')
+
+echo $totalWords/2000 | bc > avg_words.txt
